@@ -5,14 +5,18 @@ from dotenv import load_dotenv
 
 from langchain_chroma import Chroma 
 from langchain_core.documents import Document
-from langchain_huggingface import HuggingFaceEmbeddings 
+from langchain_huggingface import HuggingFaceEndpointEmbeddings
 from tqdm import tqdm 
 
 load_dotenv()
 
 # Centralize the embedding model
 def get_embedding_model():
-    return HuggingFaceEmbeddings(model_name="BAAI/bge-base-en-v1.5")
+    return HuggingFaceEndpointEmbeddings(
+        model="BAAI/bge-base-en-v1.5",
+        task="feature-extraction",
+        huggingfacehub_api_token=os.environ.get("HUGGINGFACE_API_KEY")
+    )
 
 def index_advisors(file_path: str, batch_size: int = 32):
     embeddings = get_embedding_model()
