@@ -267,8 +267,10 @@ function ChatView({ onClose }) {
     setMessages((prev) => [...prev, { id: uuidv4(), sender: 'user', text: userText }]);
     setIsLoading(true);
 
+    const API_URL = import.meta.env.VITE_API_URL || 'http://127.0.0.1:8000';
+
     try {
-      const response = await axios.post('http://127.0.0.1:8000/chat', {
+      const response = await axios.post(`${API_URL}/chat`, {
         user_input: userText,
         thread_id: threadId,
       });
